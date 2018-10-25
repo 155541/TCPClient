@@ -2,6 +2,10 @@ package com.revolhope.deepdev.tcpclient.main;
 	
 import java.net.URL;
 
+import com.revolhope.deepdev.tcpclient.controllers.ConfigController;
+import com.revolhope.deepdev.tcpclient.helpers.Params;
+import com.revolhope.deepdev.tcpclient.helpers.Toolkit;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
@@ -11,32 +15,35 @@ import javafx.scene.Scene;
 
 public class Main extends Application {
 	
-	private static final String pathConfigView = "com/revolhope/deepdev/tcpclient/views/MyFTP_ConfigView.fxml";
-	private static final String pathMainView = "com/revolhope/deepdev/tcpclient/views/MyFTP_MainView.fxml";
-	
-	private static final String pathConfigFile = ".ftp-server_config.txt";
 	
 	@Override
 	public void start(Stage primaryStage) 
 	{
 		try {		
-			URL url;
-			String title = "";
+			URL urlMainView = getClass().getClassLoader().getResource(Params.pathMainView);
+			
+			Parent root;
+			String title;
 			FXMLLoader loader = new FXMLLoader();
 			
-			if (existsConfigFile())
+			if (Toolkit.existsConfigFile())
 			{
-				url = getClass().getClassLoader().getResource(pathMainView);
 				title = "LocalShare Client";
+				
+				loader.setLocation(urlMainView);
+				root = (Parent)loader.load();
 			}
 			else
 			{
-				url = getClass().getClassLoader().getResource(pathConfigView);
-				title = "Configure";
+				title = "Configuration";
+				
+				loader.setLocation(getClass().getClassLoader().getResource(Params.pathConfigView));
+				root = (Parent)loader.load();
+				ConfigController configController = (ConfigController) loader.getController();
+				configController.setUrlMainView(urlMainView);
 			}
 			
-	        loader.setLocation(url);
-	        Parent root = (Parent)loader.load();
+	        
 	       	Scene scene = new Scene(root);
 	        primaryStage.setTitle(title);
 	        primaryStage.setScene(scene);
@@ -54,13 +61,11 @@ public class Main extends Application {
 		launch(args);
 	}
 	
-	public static void loadMainView(Stage primaryStage)
+	public static void loadMainView(Stage primaryStage, URL url)
 	{
 		try
 		{
 			FXMLLoader loader = new FXMLLoader();
-			URL url = getClass().getClassLoader().getResource(pathMainView);
-			
 			loader.setLocation(url);
 	        Parent root = (Parent)loader.load();
 	        Scene scene = new Scene(root);
@@ -74,11 +79,5 @@ public class Main extends Application {
 		{
 			e.printStackTrace();
 		}
-	}
-	
-	private boolean existsConfigFile()
-	{
-		File f = new File(pathConfigFile);
-		return f.exists() && !f.isDirectory();
 	}
 }

@@ -2,7 +2,9 @@ package com.revolhope.deepdev.tcpclient.controllers;
 
 import java.io.File;
 import java.net.InetAddress;
-import java.net.NetworkInterface;
+import java.net.URL;
+
+import com.revolhope.deepdev.tcpclient.helpers.Toolkit;
 import com.revolhope.deepdev.tcplibrary.constants.Params;
 import com.revolhope.deepdev.tcplibrary.helpers.TcpClient;
 import com.revolhope.deepdev.tcplibrary.model.Device;
@@ -21,6 +23,7 @@ import javafx.stage.DirectoryChooser;
 
 public class ConfigController 
 {
+	private URL urlMainView;
 	
 	@FXML private TextField textFieldDeviceName;
 	@FXML private TextField textFieldDeviceHomeDirectory;
@@ -57,7 +60,6 @@ public class ConfigController
 				{
 					try 
 					{
-						
 						Packet packet = new Packet();
 						Header header = new Header();
 						
@@ -69,20 +71,12 @@ public class ConfigController
 						device.setName(textFieldDeviceName.getText());
 						device.setCreatedDate(System.currentTimeMillis());
 						device.setCurrentInetAddress(InetAddress.getLocalHost());
-						
-						NetworkInterface network = NetworkInterface.getByInetAddress(InetAddress.getLocalHost());
-						byte[] mac = network.getHardwareAddress();
-						
-						StringBuilder sb = new StringBuilder();
-						for (int i = 0; i < mac.length; i++) 
-						{
-							sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));		
-						}
-						device.setMacAddress(sb.toString());
+						device.setMacAddress(Toolkit.getMacAddress());
 						
 						packet.setHeader(header);
 						packet.setBody(device);
 						System.out.println("packet send");
+						
 						TcpClient.send( packet, 
 										InetAddress.getByName(Params.SERVER_ADDRESS),
 										Params.PORT,
@@ -92,6 +86,22 @@ public class ConfigController
 							@Override
 							public void responseReceived(Packet packet) 
 							{
+								if (packet != null)
+								{
+									Header header = packet.getHeader();
+									Device device = (Device) packet.getBody();
+									switch (header.getCode()) {
+										case RES_OK:
+											
+											Toolkit.writeConfigFile(device.getName(), textFieldDeviceHomeDirectory.getText());
+											break;
+										
+										case RES_ERROR_SQL:
+											
+										default:
+											break;
+									}
+								}
 								System.out.println(packet == null ? "Packet is null" : "Server says: "+packet.getHeader().getCode());
 							}
 						});
@@ -123,6 +133,10 @@ public class ConfigController
 		});
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	private boolean checkFields()
 	{
 		boolean ok = true;
@@ -137,5 +151,14 @@ public class ConfigController
 		}
 		
 		return ok;
+	}
+	
+	/**
+	 * 
+	 * @param urlMainView
+	 */
+	public void setUrlMainView(URL urlMainView)
+	{
+		this.urlMainView = urlMainView;
 	}
 }
