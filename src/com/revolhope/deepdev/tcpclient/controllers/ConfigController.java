@@ -82,7 +82,7 @@ public class ConfigController
 						
 						packet.setHeader(header);
 						packet.setBody(device);
-						
+						System.out.println("packet send");
 						TcpClient.send( packet, 
 										InetAddress.getByName(Params.SERVER_ADDRESS),
 										Params.PORT,
