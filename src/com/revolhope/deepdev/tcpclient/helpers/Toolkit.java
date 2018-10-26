@@ -1,6 +1,7 @@
 package com.revolhope.deepdev.tcpclient.helpers;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -85,6 +86,20 @@ public class Toolkit
 	 */
 	public static String[] readConfigFile()
 	{
-		return null;
+		try 
+		{
+			FileInputStream fis = new FileInputStream(Params.pathConfigFile);
+			byte[] data = new byte[10240];
+			fis.read(data, 0, data.length);
+			String txt = new String(data,Charset.forName("UTF-8"));
+			fis.close();
+			return new String[] {txt.split(Params.separator)[0], txt.split(Params.separator)[1]};
+			
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

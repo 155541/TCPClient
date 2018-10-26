@@ -5,6 +5,7 @@ import java.net.InetAddress;
 import java.net.URL;
 
 import com.revolhope.deepdev.tcpclient.helpers.Toolkit;
+import com.revolhope.deepdev.tcpclient.main.Main;
 import com.revolhope.deepdev.tcplibrary.constants.Params;
 import com.revolhope.deepdev.tcplibrary.helpers.TcpClient;
 import com.revolhope.deepdev.tcplibrary.model.Device;
@@ -20,10 +21,12 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.Stage;
 
 public class ConfigController 
 {
 	private URL urlMainView;
+	private Stage primaryStage;
 	
 	@FXML private TextField textFieldDeviceName;
 	@FXML private TextField textFieldDeviceHomeDirectory;
@@ -94,6 +97,7 @@ public class ConfigController
 										case RES_OK:
 											
 											Toolkit.writeConfigFile(device.getName(), textFieldDeviceHomeDirectory.getText());
+											Main.loadMainView(primaryStage, urlMainView);
 											break;
 										
 										case RES_ERROR_SQL:
@@ -151,6 +155,15 @@ public class ConfigController
 		}
 		
 		return ok;
+	}
+	
+	/**
+	 * 
+	 * @param primaryStage
+	 */
+	public void setStage(Stage primaryStage)
+	{
+		this.primaryStage = primaryStage;
 	}
 	
 	/**
