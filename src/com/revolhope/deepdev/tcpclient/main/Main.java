@@ -41,6 +41,7 @@ public class Main extends Application {
 				root = (Parent)loader.load();
 				ConfigController configController = (ConfigController) loader.getController();
 				configController.setUrlMainView(urlMainView);
+				configController.setStage(primaryStage);
 			}
 			
 	        
