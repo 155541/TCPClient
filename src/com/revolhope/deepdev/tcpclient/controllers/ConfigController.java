@@ -92,6 +92,15 @@ public class ConfigController
 								if (packet != null)
 								{
 									Header header = packet.getHeader();
+									if (header.getCode() != Code.RES_OK)
+									{
+										Alert alert = new Alert(AlertType.ERROR);
+										alert.setTitle("Error");
+										alert.setHeaderText((String) packet.getBody());
+										alert.show();
+										return;
+									}
+									
 									Device device = (Device) packet.getBody();
 									switch (header.getCode()) {
 										case RES_OK:
