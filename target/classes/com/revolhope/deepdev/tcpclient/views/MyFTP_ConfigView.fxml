@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<GridPane hgap="14.0" maxHeight="+Infinity" maxWidth="+Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="184.0" prefWidth="390.0" vgap="20.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.revolhope.deepdev.tcpclient.controllers.ConfigController">
+  <children>
+    <VBox maxHeight="+Infinity" maxWidth="+Infinity" minHeight="-Infinity" prefWidth="400.0" spacing="7.0" GridPane.rowIndex="0">
+      <children>
+        <Label text="Hi, it's your first time right? Fill the followings fields please:" textAlignment="LEFT" wrapText="true">
+          <font>
+            <Font name="System Bold" size="13.0" />
+          </font>
+        </Label>
+            <HBox prefHeight="30.0" prefWidth="200.0">
+               <children>
+                  <Label text="Device name:" />
+                  <TextField fx:id="textFieldDeviceName">
+                     <HBox.margin>
+                        <Insets left="25.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+               <VBox.margin>
+                  <Insets top="15.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox prefHeight="30.0" prefWidth="200.0">
+               <children>
+                  <Label text="Home directory:" />
+                  <TextField fx:id="textFieldDeviceHomeDirectory">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <Button fx:id="btBrowse" mnemonicParsing="false" text="Browse">
+                     <HBox.margin>
+                        <Insets left="15.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+      </children>
+    </VBox>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+         <children>
+            <Button fx:id="btDone" layoutX="296.0" layoutY="1.0" mnemonicParsing="false" text="Done" AnchorPane.bottomAnchor="3.0" AnchorPane.rightAnchor="45.0" AnchorPane.topAnchor="3.0" />
+            <Button fx:id="btCancel" layoutX="241.0" layoutY="6.0" mnemonicParsing="false" text="Cancel" AnchorPane.bottomAnchor="3.0" AnchorPane.rightAnchor="115.0" AnchorPane.topAnchor="3.0" />
+         </children>
+      </AnchorPane>
+  </children>
+  <columnConstraints>
+    <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="+Infinity" minWidth="-Infinity" />
+  </columnConstraints>
+  <padding>
+    <Insets bottom="14.0" left="14.0" right="14.0" top="14.0" />
+  </padding>
+  <rowConstraints>
+    <RowConstraints maxHeight="Infinity" minHeight="-Infinity" prefHeight="107.0" valignment="CENTER" vgrow="ALWAYS" />
+    <RowConstraints maxHeight="30.0" minHeight="-Infinity" prefHeight="29.0" vgrow="NEVER" />
+  </rowConstraints>
+</GridPane>
