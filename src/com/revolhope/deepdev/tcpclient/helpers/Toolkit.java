@@ -10,6 +10,7 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import com.revolhope.deepdev.tcplibrary.model.Device;
 
@@ -101,5 +102,14 @@ public class Toolkit
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public static long timestamp()
+	{
+		return Calendar.getInstance().getTimeInMillis();
 	}
 }
