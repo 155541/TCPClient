@@ -216,7 +216,7 @@ public class MainController {
 		{
 			if (connDevices.indexOf(dev) != 0)
 			{
-				obsListConnDev.add(connDevices.indexOf(dev), dev.getName() + " : " + dev.getCurrentInetAddress().toString()); // TODO: CHECK!
+				obsListConnDev.add(dev.getName() + " : " + dev.getCurrentInetAddress().toString()); // TODO: CHECK!
 			}
 		}
 		listViewConnDev.setItems(obsListConnDev);
