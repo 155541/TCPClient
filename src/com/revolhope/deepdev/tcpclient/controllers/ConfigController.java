@@ -61,7 +61,7 @@ public class ConfigController
 			{
 				if (checkFields())
 				{
-					try 
+					try  
 					{
 						Packet packet = new Packet();
 						Header header = new Header();
