@@ -4,6 +4,7 @@ import java.io.File;
 import java.net.InetAddress;
 import java.net.URL;
 
+import com.revolhope.deepdev.tcpclient.helpers.AlertUtil;
 import com.revolhope.deepdev.tcpclient.helpers.Toolkit;
 import com.revolhope.deepdev.tcpclient.main.Main;
 import com.revolhope.deepdev.tcplibrary.constants.Params;
@@ -17,7 +18,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
@@ -94,10 +94,7 @@ public class ConfigController
 									Header header = packet.getHeader();
 									if (header.getCode() != Code.RES_OK)
 									{
-										Alert alert = new Alert(AlertType.ERROR);
-										alert.setTitle("Error");
-										alert.setHeaderText((String) packet.getBody());
-										alert.show();
+										AlertUtil.show(AlertType.ERROR, "Error", null, (String) packet.getBody());
 										return;
 									}
 									
@@ -128,10 +125,7 @@ public class ConfigController
 				}
 				else
 				{
-					Alert alert = new Alert(AlertType.ERROR);
-					alert.setTitle("Error");
-					alert.setHeaderText("Fields wrong filled");
-					alert.show();
+					AlertUtil.show(AlertType.ERROR, "Error", "Fields wrong filled", null);
 				}
 			}
 		});

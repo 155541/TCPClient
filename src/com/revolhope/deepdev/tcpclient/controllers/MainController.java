@@ -6,6 +6,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
+import com.revolhope.deepdev.tcpclient.helpers.AlertUtil;
 import com.revolhope.deepdev.tcpclient.helpers.Toolkit;
 import com.revolhope.deepdev.tcplibrary.constants.Params;
 import com.revolhope.deepdev.tcplibrary.helpers.TcpClient;
@@ -19,6 +20,7 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -121,10 +123,19 @@ public class MainController {
 			@Override
 			public void responseReceived(Packet packet) 
 			{
+				Header h = packet.getHeader();
 				Object o = packet.getBody();
-				connDevices = (ArrayList<Device>) o;
-				Toolkit.thisDevice = connDevices.get(0);
-				setConnDevicesList();
+				
+				if (h.getCode() == Code.RES_OK)
+				{
+					connDevices = (ArrayList<Device>) o;
+					Toolkit.thisDevice = connDevices.get(0);
+					setConnDevicesList();
+				}
+				else
+				{
+					AlertUtil.show(AlertType.ERROR, h.getCode().toString(), null, o.toString());
+				}
 			}
 		});
 	}
@@ -134,7 +145,10 @@ public class MainController {
 		ObservableList<String> obsrv = FXCollections.observableArrayList();
 		for (Device dev : connDevices)
 		{
-			obsrv.add(connDevices.indexOf(dev), dev.getName() + " : " + dev.getCurrentInetAddress().toString()); // TODO: CHECK!
+			if (connDevices.indexOf(dev) != 0)
+			{
+				obsrv.add(connDevices.indexOf(dev), dev.getName() + " : " + dev.getCurrentInetAddress().toString()); // TODO: CHECK!
+			}
 		}
 		listViewConnDev.setItems(obsrv);
 	}
