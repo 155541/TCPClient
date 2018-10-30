@@ -7,7 +7,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import com.revolhope.deepdev.tcpclient.helpers.AlertUtil;
-import com.revolhope.deepdev.tcpclient.helpers.Toolkit;
+import com.revolhope.deepdev.tcpclient.helpers.ClientUtil;
 import com.revolhope.deepdev.tcplibrary.constants.Params;
 import com.revolhope.deepdev.tcplibrary.helpers.TcpClient;
 import com.revolhope.deepdev.tcplibrary.model.Code;
@@ -17,13 +17,16 @@ import com.revolhope.deepdev.tcplibrary.model.Packet;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuItem;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
@@ -65,6 +68,24 @@ public class MainController {
 			e.printStackTrace();
 		}
 		
+		final ContextMenu contextMenuConnDev = new ContextMenu();
+		
+		MenuItem item1 = new MenuItem("Refresh list");
+		item1.setOnAction(new EventHandler<ActionEvent>() 
+		{
+		    public void handle(ActionEvent e) 
+		    {
+		        System.out.println("About");
+		    }
+		});
+		contextMenuConnDev.getItems().add(item1);
+		listViewConnDev.setContextMenu(contextMenuConnDev);
+		
+		
+		// TODO: Implement
+		//final ContextMenu contextMenuFilesToSend = new ContextMenu();
+		
+		
 		paneDragDrop.setOnDragOver(new EventHandler<DragEvent>() 
 		{
             @Override
@@ -93,7 +114,6 @@ public class MainController {
 			}
 		});
 		
-        
 		paneDragDrop.setOnDragDropped(new EventHandler<DragEvent>() 
 		{
             @Override
@@ -117,7 +137,6 @@ public class MainController {
                 event.consume();
             }
         });
-		
 	}
 	
 	private void openSession() throws ClassNotFoundException, UnknownHostException, IOException
@@ -127,10 +146,10 @@ public class MainController {
 		Header header = new Header();
 		
 		header.setCode(Code.REQ_OPEN_SESSION);
-		header.setTimestamp(Toolkit.timestamp());
+		header.setTimestamp(ClientUtil.timestamp());
 		
 		packet.setHeader(header);
-		packet.setBody(Toolkit.getMacAddress());
+		packet.setBody(ClientUtil.getMacAddress());
 		
 		TcpClient.send(packet, InetAddress.getByName(Params.SERVER_ADDRESS), Params.PORT, new TcpClient.OnResponse() 
 		{
@@ -144,7 +163,9 @@ public class MainController {
 				if (h.getCode() == Code.RES_OK)
 				{
 					connDevices = (ArrayList<Device>) o;
-					Toolkit.thisDevice = connDevices.get(0);
+					ClientUtil.setDevice(connDevices.get(0));
+					ClientUtil.setToken(h.getToken());
+					
 					setConnDevicesList();
 				}
 				else

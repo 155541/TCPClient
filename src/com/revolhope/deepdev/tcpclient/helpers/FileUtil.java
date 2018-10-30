@@ -4,45 +4,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Calendar;
 
-import com.revolhope.deepdev.tcplibrary.model.Device;
-
-public class Toolkit 
+public class FileUtil 
 {
-	public static Device thisDevice;
-	public static ArrayList<Device> connectedDevices = new ArrayList<>();
-	
-	/**
-	 * 
-	 * @return
-	 */
-	public static String getMacAddress()
-	{
-		NetworkInterface network;
-		try 
-		{ 
-			network = NetworkInterface.getByInetAddress(InetAddress.getLocalHost());
-			byte[] mac = network.getHardwareAddress();
-			StringBuilder sb = new StringBuilder();
-			for (int i = 0; i < mac.length; i++) 
-			{
-				sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));		
-			}
-			return sb.toString();
-		} 
-		catch (SocketException | UnknownHostException e) 
-		{
-			e.printStackTrace();
-			return null;
-		}
-	}
 	
 	/**
 	 * 
@@ -102,14 +67,5 @@ public class Toolkit
 			e.printStackTrace();
 			return null;
 		}
-	}
-
-	/**
-	 * 
-	 * @return
-	 */
-	public static long timestamp()
-	{
-		return Calendar.getInstance().getTimeInMillis();
 	}
 }

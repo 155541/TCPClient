@@ -4,7 +4,7 @@ import java.net.URL;
 
 import com.revolhope.deepdev.tcpclient.controllers.ConfigController;
 import com.revolhope.deepdev.tcpclient.helpers.Params;
-import com.revolhope.deepdev.tcpclient.helpers.Toolkit;
+import com.revolhope.deepdev.tcpclient.helpers.FileUtil;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -26,7 +26,7 @@ public class Main extends Application {
 			String title;
 			FXMLLoader loader = new FXMLLoader();
 			
-			if (Toolkit.existsConfigFile())
+			if (FileUtil.existsConfigFile())
 			{
 				title = "LocalShare Client";
 				

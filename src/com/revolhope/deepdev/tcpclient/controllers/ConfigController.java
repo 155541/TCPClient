@@ -5,7 +5,8 @@ import java.net.InetAddress;
 import java.net.URL;
 
 import com.revolhope.deepdev.tcpclient.helpers.AlertUtil;
-import com.revolhope.deepdev.tcpclient.helpers.Toolkit;
+import com.revolhope.deepdev.tcpclient.helpers.ClientUtil;
+import com.revolhope.deepdev.tcpclient.helpers.FileUtil;
 import com.revolhope.deepdev.tcpclient.main.Main;
 import com.revolhope.deepdev.tcplibrary.constants.Params;
 import com.revolhope.deepdev.tcplibrary.helpers.TcpClient;
@@ -74,7 +75,7 @@ public class ConfigController
 						device.setName(textFieldDeviceName.getText());
 						device.setCreatedDate(System.currentTimeMillis());
 						device.setCurrentInetAddress(InetAddress.getLocalHost());
-						device.setMacAddress(Toolkit.getMacAddress());
+						device.setMacAddress(ClientUtil.getMacAddress());
 						
 						packet.setHeader(header);
 						packet.setBody(device);
@@ -102,7 +103,7 @@ public class ConfigController
 									switch (header.getCode()) {
 										case RES_OK:
 											
-											Toolkit.writeConfigFile(device.getName(), textFieldDeviceHomeDirectory.getText());
+											FileUtil.writeConfigFile(device.getName(), textFieldDeviceHomeDirectory.getText());
 											Main.loadMainView(primaryStage, urlMainView);
 											break;
 										
