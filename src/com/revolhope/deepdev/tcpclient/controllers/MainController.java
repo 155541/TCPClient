@@ -204,6 +204,8 @@ public class MainController {
 					ClientUtil.setToken(h.getToken());
 					
 					setConnDevicesList();
+					labelRefreshTimestamp.setText("Last: " +
+							new SimpleDateFormat("hh:mm").format(new Date(ClientUtil.timestamp())));
 				}
 				else
 				{
