@@ -5,22 +5,38 @@ import java.io.File;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 
 public class MainController {
 
-	@FXML private AnchorPane anchor; 
 	
-	public void initialize() {
+	@FXML private ListView<String> listViewToSend;
+	@FXML private ListView<String> listViewConnDev;
+	
+	@FXML private Button btBrowse;
+	@FXML private Button btSend;
+	
+	@FXML private Label labelRefreshTimestamp;
+	@FXML private Label labelInfoFileSelected;
+	
+	@FXML private Pane paneDragDrop; 
+	
+	public void initialize() 
+	{
 		
-		anchor.setOnDragOver(new EventHandler<DragEvent>() {
+		
+		
+		paneDragDrop.setOnDragOver(new EventHandler<DragEvent>() {
             @Override
             public void handle(DragEvent event) {
                 Dragboard db = event.getDragboard();
-                anchor.getScene().setCursor(Cursor.CLOSED_HAND);
+                paneDragDrop.getScene().setCursor(Cursor.CLOSED_HAND);
                 
                 if (db.hasFiles()) {
                     event.acceptTransferModes(TransferMode.COPY);
@@ -31,19 +47,19 @@ public class MainController {
             }
         });
         
-		anchor.setOnDragExited(new EventHandler<DragEvent>() {
+		paneDragDrop.setOnDragExited(new EventHandler<DragEvent>() {
 
 			@Override
 			public void handle(DragEvent event) {
 				
-				anchor.getScene().setCursor(Cursor.DEFAULT);
+				paneDragDrop.getScene().setCursor(Cursor.DEFAULT);
 				
 			}
 			
 		});
 		
         // Dropping over surface
-		anchor.setOnDragDropped(new EventHandler<DragEvent>() {
+		paneDragDrop.setOnDragDropped(new EventHandler<DragEvent>() {
             @Override
             public void handle(DragEvent event) {
                 Dragboard db = event.getDragboard();
