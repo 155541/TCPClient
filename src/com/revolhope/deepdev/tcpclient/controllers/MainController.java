@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.revolhope.deepdev.tcpclient.helpers.AlertUtil;
 import com.revolhope.deepdev.tcpclient.helpers.ClientUtil;
@@ -98,6 +100,8 @@ public class MainController {
 							{
 								connDevices = (ArrayList<Device>) o;
 								setConnDevicesList();
+								labelRefreshTimestamp.setText("Last: " +
+										new SimpleDateFormat("hh:mm").format(new Date(ClientUtil.timestamp())));
 							}
 							else
 							{
