@@ -73,9 +73,42 @@ public class MainController {
 		MenuItem item1 = new MenuItem("Refresh list");
 		item1.setOnAction(new EventHandler<ActionEvent>() 
 		{
-		    public void handle(ActionEvent e) 
+		    public void handle(ActionEvent e)
 		    {
-		        System.out.println("About");
+		    	Packet packet = new Packet();
+		    	Header header = new Header();
+		    	
+		    	header.setCode(Code.REQ_GET_DEV_CONN);
+		    	header.setTimestamp(ClientUtil.timestamp());
+		    	header.setDeviceId(ClientUtil.getDevice().getId());
+		    	header.setToken(ClientUtil.getToken());
+		    	
+		    	packet.setHeader(header);
+		    	try {
+					TcpClient.send(packet, InetAddress.getByName(Params.SERVER_ADDRESS), Params.PORT, new TcpClient.OnResponse() 
+					{
+						@SuppressWarnings("unchecked")
+						@Override
+						public void responseReceived(Packet packet) 
+						{
+							Header h = packet.getHeader();
+							Object o = packet.getBody();
+							
+							if (h.getCode() == Code.RES_OK)
+							{
+								connDevices = (ArrayList<Device>) o;
+								setConnDevicesList();
+							}
+							else
+							{
+								AlertUtil.show(AlertType.ERROR, h.getCode().toString(), null, o.toString());
+							}
+						}
+					});
+				} catch (ClassNotFoundException | IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 		    }
 		});
 		contextMenuConnDev.getItems().add(item1);
