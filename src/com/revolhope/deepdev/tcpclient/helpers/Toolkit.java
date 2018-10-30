@@ -27,7 +27,7 @@ public class Toolkit
 	{
 		NetworkInterface network;
 		try 
-		{
+		{ 
 			network = NetworkInterface.getByInetAddress(InetAddress.getLocalHost());
 			byte[] mac = network.getHardwareAddress();
 			StringBuilder sb = new StringBuilder();

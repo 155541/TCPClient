@@ -34,6 +34,9 @@ public class MainController {
 	
 	@FXML private ListView<String> listViewToSend;
 	@FXML private ListView<String> listViewConnDev;
+	private ObservableList<String> obsListConnDev;
+	private ObservableList<String> obsListToSend;
+	
 	
 	@FXML private Button btBrowse;
 	@FXML private Button btSend;
@@ -45,9 +48,13 @@ public class MainController {
 	
 	
 	private static ArrayList<Device> connDevices;
+	private static ArrayList<File> filesToSend;
 	
 	public void initialize() 
 	{
+		obsListConnDev = FXCollections.observableArrayList();
+		obsListToSend = FXCollections.observableArrayList();
+		filesToSend = new ArrayList<>();
 		
 		try 
 		{
@@ -58,46 +65,53 @@ public class MainController {
 			e.printStackTrace();
 		}
 		
-		paneDragDrop.setOnDragOver(new EventHandler<DragEvent>() {
+		paneDragDrop.setOnDragOver(new EventHandler<DragEvent>() 
+		{
             @Override
-            public void handle(DragEvent event) {
+            public void handle(DragEvent event) 
+            {
                 Dragboard db = event.getDragboard();
                 paneDragDrop.getScene().setCursor(Cursor.CLOSED_HAND);
                 
-                if (db.hasFiles()) {
+                if (db.hasFiles()) 
+                {
                     event.acceptTransferModes(TransferMode.COPY);
-                    
-                } else {
+                } 
+                else 
+                {
                     event.consume();
                 }
             }
         });
         
-		paneDragDrop.setOnDragExited(new EventHandler<DragEvent>() {
-
+		paneDragDrop.setOnDragExited(new EventHandler<DragEvent>() 
+		{
 			@Override
-			public void handle(DragEvent event) {
-				
+			public void handle(DragEvent event) 
+			{	
 				paneDragDrop.getScene().setCursor(Cursor.DEFAULT);
-				
 			}
-			
 		});
 		
-        // Dropping over surface
-		paneDragDrop.setOnDragDropped(new EventHandler<DragEvent>() {
+        
+		paneDragDrop.setOnDragDropped(new EventHandler<DragEvent>() 
+		{
             @Override
-            public void handle(DragEvent event) {
-                Dragboard db = event.getDragboard();
+            public void handle(DragEvent event) 
+            {
+                Dragboard dragboard = event.getDragboard();
                 boolean success = false;
-                if (db.hasFiles()) {
-                    success = true;
-                    String filePath = null;
-                    for (File file:db.getFiles()) {
-                        filePath = file.getAbsolutePath();
-                        System.out.println(filePath);
+                
+                if (dragboard.hasFiles()) 
+                {    
+                	success = true;                    
+                    for (File file : dragboard.getFiles())
+                    {
+                        obsListToSend.add(file.getName());
+                        filesToSend.add(file);
                     }
                 }
+                
                 event.setDropCompleted(success);
                 event.consume();
             }
@@ -142,14 +156,14 @@ public class MainController {
 	
 	private void setConnDevicesList()
 	{
-		ObservableList<String> obsrv = FXCollections.observableArrayList();
+		obsListConnDev.clear();
 		for (Device dev : connDevices)
 		{
 			if (connDevices.indexOf(dev) != 0)
 			{
-				obsrv.add(connDevices.indexOf(dev), dev.getName() + " : " + dev.getCurrentInetAddress().toString()); // TODO: CHECK!
+				obsListConnDev.add(connDevices.indexOf(dev), dev.getName() + " : " + dev.getCurrentInetAddress().toString()); // TODO: CHECK!
 			}
 		}
-		listViewConnDev.setItems(obsrv);
+		listViewConnDev.setItems(obsListConnDev);
 	}
 }
