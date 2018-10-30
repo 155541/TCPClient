@@ -109,6 +109,7 @@ public class MainController {
                     {
                         obsListToSend.add(file.getName());
                         filesToSend.add(file);
+                        listViewToSend.setItems(obsListToSend);
                     }
                 }
                 
