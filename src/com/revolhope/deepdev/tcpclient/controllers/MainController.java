@@ -54,6 +54,8 @@ public class MainController {
 	
 	private static ArrayList<Device> connDevices;
 	private static ArrayList<File> filesToSend;
+	private SimpleDateFormat sdf;
+	
 	
 	public void initialize() 
 	{
@@ -100,8 +102,7 @@ public class MainController {
 							{
 								connDevices = (ArrayList<Device>) o;
 								setConnDevicesList();
-								labelRefreshTimestamp.setText("Last: " +
-										new SimpleDateFormat("hh:mm").format(new Date(ClientUtil.timestamp())));
+								labelRefreshTimestamp.setText("Last: " + getFormattedTimestamp());
 							}
 							else
 							{
@@ -176,6 +177,12 @@ public class MainController {
         });
 	}
 	
+	/**
+	 * 
+	 * @throws ClassNotFoundException
+	 * @throws UnknownHostException
+	 * @throws IOException
+	 */
 	private void openSession() throws ClassNotFoundException, UnknownHostException, IOException
 	{
 		
@@ -204,8 +211,7 @@ public class MainController {
 					ClientUtil.setToken(h.getToken());
 					
 					setConnDevicesList();
-					labelRefreshTimestamp.setText("Last: " +
-							new SimpleDateFormat("hh:mm").format(new Date(ClientUtil.timestamp())));
+					labelRefreshTimestamp.setText("Last: " + getFormattedTimestamp());
 				}
 				else
 				{
@@ -215,6 +221,9 @@ public class MainController {
 		});
 	}
 	
+	/**
+	 * 
+	 */
 	private void setConnDevicesList()
 	{
 		obsListConnDev.clear();
@@ -226,5 +235,18 @@ public class MainController {
 			}
 		}
 		listViewConnDev.setItems(obsListConnDev);
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	private String getFormattedTimestamp()
+	{
+		if (sdf == null)
+		{
+			sdf = new SimpleDateFormat("hh:mm");
+		}
+		return sdf.format(new Date(ClientUtil.timestamp()));
 	}
 }
