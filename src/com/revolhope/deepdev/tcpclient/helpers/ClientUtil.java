@@ -6,6 +6,7 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.Calendar;
 
+import com.revolhope.deepdev.tcplibrary.constants.Params;
 import com.revolhope.deepdev.tcplibrary.model.Device;
 import com.revolhope.deepdev.tcplibrary.model.Token;
 
@@ -61,6 +62,11 @@ public class ClientUtil
 			}
 		}
 		return thisMacAddr;
+	}
+	
+	public static InetAddress getServerAddr() throws UnknownHostException
+	{
+		return InetAddress.getByName(Params.SERVER_ADDRESS);
 	}
 	
 	public static long timestamp()

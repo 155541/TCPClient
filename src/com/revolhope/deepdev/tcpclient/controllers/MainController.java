@@ -1,6 +1,7 @@
 package com.revolhope.deepdev.tcpclient.controllers;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -8,11 +9,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.apache.commons.io.IOUtils;
+
 import com.revolhope.deepdev.tcpclient.helpers.AlertUtil;
 import com.revolhope.deepdev.tcpclient.helpers.ClientUtil;
 import com.revolhope.deepdev.tcplibrary.constants.Params;
 import com.revolhope.deepdev.tcplibrary.helpers.TcpClient;
 import com.revolhope.deepdev.tcplibrary.model.Code;
+import com.revolhope.deepdev.tcplibrary.model.DataFile;
 import com.revolhope.deepdev.tcplibrary.model.Device;
 import com.revolhope.deepdev.tcplibrary.model.Header;
 import com.revolhope.deepdev.tcplibrary.model.Packet;
@@ -45,6 +49,7 @@ public class MainController {
 	
 	@FXML private Button btBrowse;
 	@FXML private Button btSend;
+	@FXML private Button btRequest;
 	
 	@FXML private Label labelRefreshTimestamp;
 	@FXML private Label labelInfoFileSelected;
@@ -175,6 +180,89 @@ public class MainController {
                 event.consume();
             }
         });
+	
+	
+		
+		btSend.setOnAction(new EventHandler<ActionEvent>() 
+		{
+			@Override
+			public void handle(ActionEvent event) 
+			{
+				ObservableList<Integer> indxs = listViewConnDev.getSelectionModel().getSelectedIndices();
+				ObservableList<String> fileNames = listViewToSend.getSelectionModel().getSelectedItems();
+				Device targetDev;
+				String name, ext;
+				String[] segments;
+				DataFile df;
+				
+				for (int indx : indxs)
+				{
+					if (connDevices.size() > indx)
+					{
+						targetDev = connDevices.get(indx);
+						ArrayList<DataFile> files = new ArrayList<>();
+						
+						for (String path : fileNames)
+						{
+							
+							segments = path.split(File.pathSeparator);
+							name = segments[segments.length-1].split(".")[0];
+							ext = segments[segments.length-1].split(".")[1];
+							
+							df = new DataFile();
+							
+							df.setFilename(name);
+							df.setExtension(ext);
+							try 
+							{
+								df.setSource(IOUtils.toByteArray(new FileInputStream(path)));
+							} 
+							catch (IOException e) {
+								
+								e.printStackTrace();
+							}
+							df.setOriginId(ClientUtil.getDevice().getId());
+							df.setTargetId(targetDev.getId());
+							df.setTimestamp(ClientUtil.timestamp());
+							files.add(df);
+						}
+						
+						Packet packet = new Packet();
+						Header header = new Header();
+						
+						header.setCode(Code.REQ_TRANSMISSION);
+						header.setToken(ClientUtil.getToken());
+						header.setDeviceId(ClientUtil.getDevice().getId());
+						header.setTimestamp(ClientUtil.timestamp());
+						
+						packet.setHeader(header);
+						packet.setBody(files.toArray(new DataFile[0]));
+						
+						try 
+						{
+							TcpClient.send(packet, ClientUtil.getServerAddr(), Params.PORT, new TcpClient.OnResponse()
+							{
+								@Override
+								public void responseReceived(Packet packet) 
+								{ 
+									if (packet.getHeader().getCode() == Code.RES_OK)
+									{
+										AlertUtil.show(AlertType.INFORMATION, "Files send", "All files have been send", "Total files: " + files.size());
+									}
+								}
+							});
+						} 
+						catch (ClassNotFoundException | IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						
+					}
+				}
+				
+			}
+		});
+	
 	}
 	
 	/**
