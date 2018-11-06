@@ -9,7 +9,8 @@ import com.revolhope.deepdev.tcpclient.helpers.ClientUtil;
 import com.revolhope.deepdev.tcpclient.helpers.FileUtil;
 import com.revolhope.deepdev.tcpclient.main.Main;
 import com.revolhope.deepdev.tcplibrary.constants.Params;
-import com.revolhope.deepdev.tcplibrary.helpers.TcpClient;
+import com.revolhope.deepdev.tcplibrary.helpers.client.OnResponse;
+import com.revolhope.deepdev.tcplibrary.helpers.client.TcpClient;
 import com.revolhope.deepdev.tcplibrary.model.Device;
 import com.revolhope.deepdev.tcplibrary.model.Header;
 import com.revolhope.deepdev.tcplibrary.model.Packet;
@@ -84,7 +85,7 @@ public class ConfigController
 						TcpClient.send( packet, 
 										InetAddress.getByName(Params.SERVER_ADDRESS),
 										Params.PORT,
-										new TcpClient.OnResponse() 
+										new OnResponse() 
 						{
 							
 							@Override

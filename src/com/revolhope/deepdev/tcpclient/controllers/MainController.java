@@ -14,7 +14,8 @@ import org.apache.commons.io.IOUtils;
 import com.revolhope.deepdev.tcpclient.helpers.AlertUtil;
 import com.revolhope.deepdev.tcpclient.helpers.ClientUtil;
 import com.revolhope.deepdev.tcplibrary.constants.Params;
-import com.revolhope.deepdev.tcplibrary.helpers.TcpClient;
+import com.revolhope.deepdev.tcplibrary.helpers.client.OnResponse;
+import com.revolhope.deepdev.tcplibrary.helpers.client.TcpClient;
 import com.revolhope.deepdev.tcplibrary.model.Code;
 import com.revolhope.deepdev.tcplibrary.model.DataFile;
 import com.revolhope.deepdev.tcplibrary.model.Device;
@@ -99,7 +100,7 @@ public class MainController {
 		    	
 		    	packet.setHeader(header);
 		    	try {
-					TcpClient.send(packet, InetAddress.getByName(Params.SERVER_ADDRESS), Params.PORT, new TcpClient.OnResponse() 
+					TcpClient.send(packet, InetAddress.getByName(Params.SERVER_ADDRESS), Params.PORT, new OnResponse() 
 					{
 						@SuppressWarnings("unchecked")
 						@Override
@@ -249,7 +250,7 @@ public class MainController {
 						
 						try 
 						{
-							TcpClient.send(packet, ClientUtil.getServerAddr(), Params.PORT, new TcpClient.OnResponse()
+							TcpClient.send(packet, ClientUtil.getServerAddr(), Params.PORT, new OnResponse()
 							{
 								@Override
 								public void responseReceived(Packet packet) 
@@ -303,7 +304,7 @@ public class MainController {
 		packet.setHeader(header);
 		packet.setBody(ClientUtil.getMacAddress());
 		
-		TcpClient.send(packet, InetAddress.getByName(Params.SERVER_ADDRESS), Params.PORT, new TcpClient.OnResponse() 
+		TcpClient.send(packet, ClientUtil.getServerAddr(), Params.PORT, new OnResponse() 
 		{
 			@SuppressWarnings("unchecked")
 			@Override
