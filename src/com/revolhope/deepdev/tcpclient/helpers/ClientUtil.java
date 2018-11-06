@@ -15,6 +15,7 @@ public class ClientUtil
 	private static Device thisDevice;
 	private static Token thisToken;
 	private static String thisMacAddr = null;
+	private static String thisHomePath = null;
 	
 	public static Device getDevice()
 	{
@@ -67,6 +68,16 @@ public class ClientUtil
 	public static InetAddress getServerAddr() throws UnknownHostException
 	{
 		return InetAddress.getByName(Params.SERVER_ADDRESS);
+	}
+	
+	public static void setHomePath(String path)
+	{
+		ClientUtil.thisHomePath = path;
+	}
+	
+	public static String getHomePath()
+	{
+		return ClientUtil.thisHomePath;
 	}
 	
 	public static long timestamp()

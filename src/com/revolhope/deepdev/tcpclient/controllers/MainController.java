@@ -68,6 +68,9 @@ public class MainController {
 		obsListToSend = FXCollections.observableArrayList();
 		filesToSend = new ArrayList<>();
 		
+		/**
+		 * Open session with server
+		 */
 		try 
 		{
 			openSession();
@@ -77,8 +80,10 @@ public class MainController {
 			e.printStackTrace();
 		}
 		
+		/**
+		 * Definition of the ContextMenus: ConnectedDevice ContextMenu & FilesToSend ContextMenu
+		 */
 		final ContextMenu contextMenuConnDev = new ContextMenu();
-		
 		MenuItem item1 = new MenuItem("Refresh list");
 		item1.setOnAction(new EventHandler<ActionEvent>() 
 		{
@@ -123,12 +128,14 @@ public class MainController {
 		});
 		contextMenuConnDev.getItems().add(item1);
 		listViewConnDev.setContextMenu(contextMenuConnDev);
-		
-		
 		// TODO: Implement
 		//final ContextMenu contextMenuFilesToSend = new ContextMenu();
 		
 		
+		
+		/**
+		 * Pane DragAndDrop configuration
+		 */
 		paneDragDrop.setOnDragOver(new EventHandler<DragEvent>() 
 		{
             @Override
@@ -182,7 +189,9 @@ public class MainController {
         });
 	
 	
-		
+		/**
+		 * Button send onAction definition
+		 */
 		btSend.setOnAction(new EventHandler<ActionEvent>() 
 		{
 			@Override
@@ -262,7 +271,18 @@ public class MainController {
 				
 			}
 		});
-	
+
+		/**
+		 * Button request onAction definition
+		 */
+		btRequest.setOnAction(new EventHandler<ActionEvent>() 
+		{
+			@Override
+			public void handle(ActionEvent event) 
+			{
+				
+			}
+		});
 	}
 	
 	/**

@@ -4,6 +4,8 @@ import java.net.URL;
 
 import com.revolhope.deepdev.tcpclient.controllers.ConfigController;
 import com.revolhope.deepdev.tcpclient.helpers.Params;
+import com.revolhope.deepdev.tcpclient.helpers.AlertUtil;
+import com.revolhope.deepdev.tcpclient.helpers.ClientUtil;
 import com.revolhope.deepdev.tcpclient.helpers.FileUtil;
 
 import javafx.application.Application;
@@ -11,6 +13,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert.AlertType;
 
 
 public class Main extends Application {
@@ -28,6 +31,20 @@ public class Main extends Application {
 			
 			if (FileUtil.existsConfigFile())
 			{
+				
+				String[] data = FileUtil.readConfigFile();
+				if (data != null && data.length == 2)
+				{
+					ClientUtil.setHomePath(data[1]);
+				}
+				else
+				{
+					AlertUtil.show(AlertType.WARNING,
+								   "Caution",
+							       "Error reading config file",
+							       "You will not be able to download pending files...");
+				}
+				
 				title = "LocalShare Client";
 				
 				loader.setLocation(urlMainView);
