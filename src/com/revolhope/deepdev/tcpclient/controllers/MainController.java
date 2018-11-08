@@ -304,11 +304,7 @@ public class MainController {
 		packet.setHeader(header);
 		packet.setBody(ClientUtil.getMacAddress());
 		
-<<<<<<< HEAD
-		TcpClient.send(packet, InetAddress.getByName(Params.SERVER_ADDRESS), Params.PORT, new OnResponse() 
-=======
 		TcpClient.send(packet, ClientUtil.getServerAddr(), Params.PORT, new OnResponse() 
->>>>>>> branch 'master' of https://github.com/155541/TCPClient.git
 		{
 			@SuppressWarnings("unchecked")
 			@Override
