@@ -331,23 +331,23 @@ public class MainController {
 	}
 	
 	/**
-	 * 
+	 * TODO:
 	 */
 	private void setConnDevicesList()
 	{
 		obsListConnDev.clear();
 		for (Device dev : connDevices)
 		{
-			if (connDevices.indexOf(dev) != 0)
+			if (dev.getId() != ClientUtil.getDevice().getId())
 			{
-				obsListConnDev.add(dev.getName() + " : " + dev.getCurrentInetAddress().toString()); // TODO: CHECK!
+				obsListConnDev.add(dev.getName() + " @ " + dev.getCurrentInetAddress().toString()); // TODO: CHECK!
 			}
 		}
 		listViewConnDev.setItems(obsListConnDev);
 	}
 	
 	/**
-	 * 
+	 * TODO:
 	 * @return
 	 */
 	private String getFormattedTimestamp()
