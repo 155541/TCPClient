@@ -35,6 +35,7 @@ public class Main extends Application {
 				String[] data = FileUtil.readConfigFile();
 				if (data != null && data.length == 2)
 				{
+					title = "LocalShare -> Client: " + data[0];
 					ClientUtil.setHomePath(data[1]);
 				}
 				else
@@ -43,9 +44,10 @@ public class Main extends Application {
 								   "Caution",
 							       "Error reading config file",
 							       "You will not be able to download pending files...");
+					title = "LocalShare - Client";
 				}
 				
-				title = "LocalShare Client";
+				
 				
 				loader.setLocation(urlMainView);
 				root = (Parent)loader.load();
@@ -83,13 +85,30 @@ public class Main extends Application {
 	{
 		try
 		{
+			String title;
+			String[] data = FileUtil.readConfigFile();
+			
+			if (data != null && data.length == 2)
+			{
+				title = "LocalShare -> Client: " + data[0];
+				ClientUtil.setHomePath(data[1]);
+			}
+			else
+			{
+				AlertUtil.show(AlertType.WARNING,
+							   "Caution",
+						       "Error reading config file",
+						       "You will not be able to download pending files...");
+				title = "LocalShare - Client";
+			}
+			
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(url);
 	        Parent root = (Parent)loader.load();
 	        Scene scene = new Scene(root);
 	        
 	        primaryStage.setScene(scene);
-	        primaryStage.setTitle("LocalShare Client");
+	        primaryStage.setTitle(title);
 	        primaryStage.setResizable(false);
 	        primaryStage.show();
 		}
