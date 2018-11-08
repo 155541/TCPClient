@@ -80,7 +80,6 @@ public class ConfigController
 						
 						packet.setHeader(header);
 						packet.setBody(device);
-						System.out.println("packet send");
 						
 						TcpClient.send( packet, 
 										InetAddress.getByName(Params.SERVER_ADDRESS),
@@ -114,7 +113,6 @@ public class ConfigController
 											break;
 									}
 								}
-								System.out.println(packet == null ? "Packet is null" : "Server says: "+packet.getHeader().getCode());
 							}
 						});
 						
