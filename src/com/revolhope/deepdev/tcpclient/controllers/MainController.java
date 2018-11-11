@@ -182,9 +182,10 @@ public class MainController {
 		});
 		
 		/**
+		 * TODO
 		 * Handle window's close button click
 		 */
-		Stage stage = (Stage) btBrowse.getScene().getWindow();
+		/*Stage stage = (Stage) btBrowse.getScene().getWindow();
 		stage.setOnCloseRequest(new EventHandler<WindowEvent>() 
 		{
 			@Override
@@ -192,7 +193,7 @@ public class MainController {
 			{
 				quit();
 			}
-		});
+		});*/
 		
 		/**
 		 * Open session with server
