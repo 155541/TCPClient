@@ -11,6 +11,7 @@ import com.revolhope.deepdev.tcpclient.helpers.FileUtil;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
@@ -68,6 +69,7 @@ public class Main extends Application {
 	        primaryStage.setTitle(title);
 	        primaryStage.setScene(scene);
 	        primaryStage.setResizable(false);
+	        primaryStage.initStyle(StageStyle.UTILITY);
 	        primaryStage.show();
 		} 
 		catch(Exception e) 
@@ -110,6 +112,7 @@ public class Main extends Application {
 	        primaryStage.setScene(scene);
 	        primaryStage.setTitle(title);
 	        primaryStage.setResizable(false);
+	        primaryStage.initStyle(StageStyle.UTILITY);
 	        primaryStage.show();
 		}
 		catch(Exception e)
