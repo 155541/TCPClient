@@ -377,7 +377,12 @@ public class MainController {
 		
 		p.setHeader(h);
 		
-		String selected = AlertUtil.showRequestDialog(obsListConnDev.subList(0, obsListConnDev.size()-1));
+		ArrayList<String> aux = new ArrayList<>();
+		if (obsListConnDev.size() > 0)
+		{
+			aux.addAll(obsListConnDev.subList(0, obsListConnDev.size()-1));
+		}	
+		String selected = AlertUtil.showRequestDialog(aux);
 		if (selected != null)
 		{
 			p.setBody(null);
