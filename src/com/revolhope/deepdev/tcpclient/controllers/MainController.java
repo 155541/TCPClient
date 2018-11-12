@@ -41,8 +41,6 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 public class MainController {
 
@@ -204,6 +202,7 @@ public class MainController {
 		} 
 		catch (ClassNotFoundException | IOException e) 
 		{
+			AlertUtil.show(AlertType.ERROR, "Error while openning session", e.getClass().getSimpleName(), e.getMessage());
 			e.printStackTrace();
 		}
 		
@@ -378,7 +377,7 @@ public class MainController {
 		
 		p.setHeader(h);
 		
-		String selected = AlertUtil.showRequestDialog(obsListConnDev);
+		String selected = AlertUtil.showRequestDialog(obsListConnDev.subList(0, obsListConnDev.size()-1));
 		if (selected != null)
 		{
 			p.setBody(null);
@@ -409,7 +408,14 @@ public class MainController {
 						
 						for (DataFile df : files)
 						{
-							path = ClientUtil.getHomePath() + File.separator + df.getFilename() + "." + df.getExtension();
+							if (ClientUtil.getHomePath().endsWith(File.separator))
+							{
+								path = ClientUtil.getHomePath() + df.getFilename() + "." + df.getExtension();
+							}
+							else
+							{
+								path = ClientUtil.getHomePath() + File.separator + df.getFilename() + "." + df.getExtension();
+							}
 							f = new File(path);
 							
 							try 

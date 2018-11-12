@@ -69,7 +69,7 @@ public class Main extends Application {
 	        primaryStage.setTitle(title);
 	        primaryStage.setScene(scene);
 	        primaryStage.setResizable(false);
-	        primaryStage.initStyle(StageStyle.UTILITY);
+	        primaryStage.initStyle(StageStyle.TRANSPARENT);
 	        primaryStage.show();
 		} 
 		catch(Exception e) 
