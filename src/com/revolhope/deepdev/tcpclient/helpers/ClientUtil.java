@@ -72,7 +72,7 @@ public class ClientUtil
 	
 	public static void setHomePath(String path)
 	{
-		ClientUtil.thisHomePath = path;
+		ClientUtil.thisHomePath = path.trim();
 	}
 	
 	public static String getHomePath()

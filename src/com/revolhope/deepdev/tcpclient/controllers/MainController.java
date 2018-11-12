@@ -439,6 +439,56 @@ public class MainController {
 									   "Number of files received: " + files.size() + "\n" +
 									   "Number of files writen: " + count);
 						
+						if (files.size() == count)
+						{
+							if (AlertUtil.showQuestion(AlertType.CONFIRMATION, "Confirmation",
+									"Delete files on server",
+									"Do you want to remove the received files from server?\n"
+									+ "If not, in next request will be downloaded again.",
+									"Delete from server", "Keep it"))
+								
+							{
+								Packet p1 = new Packet();
+								Header h1 = new Header();
+								
+								h1.setCode(Code.REQ_DELETE_FILES);
+								h1.setDeviceId(ClientUtil.getDevice().getId());
+								h1.setToken(ClientUtil.getToken());
+								
+								
+								ArrayList<Long> ids = new ArrayList<>();
+								for (DataFile df : files)
+								{
+									ids.add(df.getId());
+								}
+								p1.setBody(ids);
+								h1.setTimestamp(ClientUtil.timestamp());
+								p1.setHeader(h1);
+								try
+								{
+									TcpClient.send(p1, ClientUtil.getServerAddr(), Params.PORT, new OnResponse() 
+									{
+										@Override
+										public void responseReceived(Packet packet) 
+										{
+											if (packet.getHeader().getCode() == Code.RES_OK)
+											{
+												AlertUtil.show(AlertType.INFORMATION, "Confirmation", "Files deleted", "All downloaded files have been removed from server");
+											}
+											else
+											{
+												AlertUtil.show(AlertType.ERROR, h.getCode().toString(), null, packet.getBody().toString());
+											}
+										}
+									});
+								}
+								catch(Exception e)
+								{
+									AlertUtil.show(AlertType.ERROR, h.getCode().toString(), null, packet.getBody().toString());
+								}
+							}
+						}
+						
 					}
 					else
 					{
@@ -553,7 +603,7 @@ public class MainController {
 		
 		header.setCode(Code.REQ_CLOSE_SESSION);
 		header.setTimestamp(ClientUtil.timestamp());
-		
+		header.setToken(ClientUtil.getToken());
 		packet.setHeader(header);
 		packet.setBody(ClientUtil.getDevice());
 		
